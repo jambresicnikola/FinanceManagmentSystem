@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.GridPane?>
+
+<MenuBar prefWidth="900.0" GridPane.columnSpan="2" GridPane.valignment="TOP" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.java.financemanagementsystem.controller.MenuBarIncludeController">
+    <menus>
+      <Menu mnemonicParsing="false" text="Home">
+        <items>
+          <MenuItem mnemonicParsing="false" onAction="#home" text="Home" />
+        </items>
+      </Menu>
+        <Menu mnemonicParsing="false" text="Transactions">
+            <items>
+                <MenuItem mnemonicParsing="false" onAction="#manageTransactions" text="Manage transactions" />
+                <MenuItem mnemonicParsing="false" onAction="#addTransactions" text="Add transaction" />
+            </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Overview">
+            <items>
+                <MenuItem mnemonicParsing="false" text="Summary" />
+                <MenuItem mnemonicParsing="false" text="Charts" />
+            </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Categories">
+            <items>
+                <MenuItem mnemonicParsing="false" onAction="#manageCategories" text="Manage categories" />
+                <MenuItem mnemonicParsing="false" onAction="#addCategory" text="Add category" />
+            </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="About">
+            <items>
+                <MenuItem mnemonicParsing="false" text="About Finance Management System" />
+            </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Account">
+            <items>
+                <MenuItem mnemonicParsing="false" onAction="#manageAccount" text="Manage account" />
+                <MenuItem mnemonicParsing="false" onAction="#logOut" text="Logout" />
+            </items>
+        </Menu>
+    </menus>
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+</MenuBar>

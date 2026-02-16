@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="900.0" style="-fx-background-color: white;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="hr.java.financemanagementsystem.controller.SignUpScreenController">
+  <columnConstraints>
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints maxHeight="161.59998168945313" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="337.5999938964843" minHeight="10.0" prefHeight="331.19999999999993" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="242.00000610351566" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <Label text="Sign up" GridPane.columnSpan="2" GridPane.halignment="CENTER">
+         <font>
+            <Font name="Arial Bold" size="24.0" />
+         </font>
+         <GridPane.margin>
+            <Insets top="20.0" />
+         </GridPane.margin>
+      </Label>
+      <GridPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="300.0" prefWidth="500.0" style="-fx-background-color: #62b6cb; -fx-background-radius: 20;" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="229.20001220703125" minWidth="10.0" prefWidth="229.20001220703125" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="235.5999755859375" minWidth="10.0" prefWidth="230.79998779296875" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="55.799993896484374" minHeight="10.0" prefHeight="11.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="40.60001220703125" minHeight="10.0" prefHeight="11.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="11.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="11.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="71.99998779296877" minHeight="10.0" prefHeight="11.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="67.80002441406248" minHeight="10.0" prefHeight="11.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label text="First name:" textFill="WHITE">
+               <font>
+                  <Font name="Arial" size="14.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets left="10.0" />
+               </GridPane.margin>
+            </Label>
+            <Label text="Last name:" textFill="WHITE" GridPane.columnIndex="1">
+               <font>
+                  <Font name="Arial" size="14.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets left="30.0" />
+               </GridPane.margin>
+            </Label>
+            <TextField fx:id="firstNameTextField" maxWidth="-Infinity" prefWidth="180.0" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets left="10.0" />
+               </GridPane.margin>
+            </TextField>
+            <TextField fx:id="lastNameTextField" maxWidth="-Infinity" prefWidth="180.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets left="30.0" />
+               </GridPane.margin>
+            </TextField>
+            <TextField fx:id="usernameTextField" maxWidth="-Infinity" prefWidth="180.0" GridPane.rowIndex="3">
+               <GridPane.margin>
+                  <Insets left="10.0" />
+               </GridPane.margin>
+            </TextField>
+            <Label text="Username:" textFill="WHITE" GridPane.rowIndex="2">
+               <font>
+                  <Font name="Arial" size="14.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets left="10.0" />
+               </GridPane.margin>
+            </Label>
+            <Label text="Password:" textFill="WHITE" GridPane.rowIndex="4">
+               <font>
+                  <Font name="Arial" size="14.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets left="10.0" />
+               </GridPane.margin>
+            </Label>
+            <Label text="Confirm password:" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="4">
+               <font>
+                  <Font name="Arial" size="14.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets left="30.0" />
+               </GridPane.margin>
+            </Label>
+            <PasswordField fx:id="passwordField" maxWidth="-Infinity" prefWidth="180.0" GridPane.rowIndex="5">
+               <GridPane.margin>
+                  <Insets left="10.0" />
+               </GridPane.margin>
+            </PasswordField>
+            <PasswordField fx:id="confirmPasswordField" maxWidth="-Infinity" prefWidth="180.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+               <GridPane.margin>
+                  <Insets left="30.0" />
+               </GridPane.margin>
+            </PasswordField>
+         </children>
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+      </GridPane>
+      <Button mnemonicParsing="false" onAction="#signUp" style="-fx-background-color: #62b6cb; -fx-background-radius: 20;" text="Sign up" textFill="WHITE" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+         <font>
+            <Font name="Arial Bold" size="16.0" />
+         </font>
+         <padding>
+            <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+         </padding>
+         <GridPane.margin>
+            <Insets bottom="10.0" />
+         </GridPane.margin>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+      <Button mnemonicParsing="false" onAction="#back" style="-fx-background-color: #62b6cb; -fx-background-radius: 20;" text="⇐" textFill="WHITE" GridPane.halignment="RIGHT">
+         <font>
+            <Font name="Arial" size="20.0" />
+         </font>
+         <padding>
+            <Insets bottom="5.0" left="30.0" right="30.0" top="5.0" />
+         </padding>
+         <GridPane.margin>
+            <Insets right="40.0" top="20.0" />
+         </GridPane.margin>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+   </children>
+</GridPane>
