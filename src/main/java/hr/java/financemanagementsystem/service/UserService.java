@@ -26,12 +26,10 @@ public class UserService {
         UserService.loggedInUser = loggedInUser;
     }
 
-    private static final UserDatabaseRepository userDatabaseRepository = new UserDatabaseRepository();
-
     public static void register(UserRegistrationForm userRegistrationForm) throws UserValidationException {
         UserValidator.validateUserRegistration(userRegistrationForm);
 
-        if (userDatabaseRepository.findUserByUsername(userRegistrationForm.getUsername()).isPresent()) {
+        if (UserDatabaseRepository.getInstance().findUserByUsername(userRegistrationForm.getUsername()).isPresent()) {
             throw new UserValidationException("\nUsername already exists.");
         }
 
@@ -44,7 +42,7 @@ public class UserService {
                 .withPassword(hashedPassword)
                 .build();
 
-        userDatabaseRepository.save(user);
+        UserDatabaseRepository.getInstance().save(user);
 
         DialogService.information("Account created", "You have successfully registered.");
 
@@ -53,7 +51,7 @@ public class UserService {
 
     public static void signIn(String username, String password) throws UserValidationException {
         UserValidator.validateUserSignIn(username, password);
-        Optional<User> user = userDatabaseRepository.findUserByUsername(username);
+        Optional<User> user = UserDatabaseRepository.getInstance().findUserByUsername(username);
 
         if (user.isEmpty()) {
             throw new UserValidationException("\nUser with that username does not exists.");
@@ -73,7 +71,8 @@ public class UserService {
     public static void editProfile(UserEditProfileForm userEditProfileForm) throws UserValidationException {
         UserValidator.validateUserEditProfile(userEditProfileForm);
 
-        if (userDatabaseRepository.findUserByUsername(userEditProfileForm.getUsername()).isPresent() && !userEditProfileForm.getUsername().equals(loggedInUser.getUsername())) {
+        if (UserDatabaseRepository.getInstance().findUserByUsername(userEditProfileForm.getUsername()).isPresent()
+                && !userEditProfileForm.getUsername().equals(loggedInUser.getUsername())) {
             throw new UserValidationException("\nUsername already exists.");
         }
 
@@ -96,7 +95,7 @@ public class UserService {
                 .build();
 
         setLoggedInUser(updatedLoggedInUser);
-        userDatabaseRepository.update(loggedInUser);
+        UserDatabaseRepository.getInstance().update(loggedInUser);
 
         DialogService.information("Account updated", "You have successfully updated your account.");
 
@@ -116,7 +115,7 @@ public class UserService {
         String hashedNewPassword = BCrypt.withDefaults().hashToString(12, newPassword.toCharArray());
 
         loggedInUser.setPassword(hashedNewPassword);
-        userDatabaseRepository.update(loggedInUser);
+        UserDatabaseRepository.getInstance().update(loggedInUser);
 
         DialogService.information("Password changed", "You have successfully changed your password.");
 

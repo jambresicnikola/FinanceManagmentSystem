@@ -1,29 +1,28 @@
 package hr.java.financemanagementsystem.controller;
 
 import hr.java.financemanagementsystem.exception.CategoryValidationException;
-import hr.java.financemanagementsystem.model.Category;
 import hr.java.financemanagementsystem.service.CategoryService;
 import hr.java.financemanagementsystem.service.DialogService;
-import hr.java.financemanagementsystem.service.UserService;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
-public class AddCategoryScreenController {
+public class EditCategoryScreenController {
     @FXML
     private TextField categoryNameTextField;
 
-    public void addNewCategory() {
+    public void initialize() {
+        categoryNameTextField.setText(CategoryService.getCategoryToManage().getName());
+    }
+
+    public void confirmCategoryEdit() {
         String categoryName = categoryNameTextField.getText();
 
-        Category category = new Category.Builder()
-                .withName(categoryName)
-                .withUser(UserService.getLoggedInUser())
-                .build();
+        CategoryService.getCategoryToManage().setName(categoryName);
 
         try {
-            CategoryService.createNewCategory(category);
+            CategoryService.editCategory();
         } catch (CategoryValidationException e) {
-            DialogService.error("Category not created", e.getMessage());
+            DialogService.error("Changes not saved", e.getMessage());
         }
     }
 }

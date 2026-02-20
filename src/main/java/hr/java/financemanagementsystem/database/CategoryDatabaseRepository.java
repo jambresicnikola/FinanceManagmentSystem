@@ -17,6 +17,7 @@ public class CategoryDatabaseRepository extends AbstractRepository<Category> {
     private static final String FIND_CATEGORY_BY_NAME_QUERY = "SELECT ID, NAME, USER_ID FROM CATEGORIES WHERE NAME=? AND USER_ID=?";
     private static final String SAVE_CATEGORY_QUERY = "INSERT INTO CATEGORIES (NAME, USER_ID) VALUES (?, ?)";
     private static final String FIND_ALL_CATEGORIES_QUERY = "SELECT ID, NAME, USER_ID FROM CATEGORIES WHERE USER_ID=?";
+    private static final String UPDATE_CATEGORY_QUERY = "UPDATE CATEGORIES SET NAME=? WHERE ID=?";
 
     private static CategoryDatabaseRepository instance;
 
@@ -75,8 +76,7 @@ public class CategoryDatabaseRepository extends AbstractRepository<Category> {
         String name = resultSet.getString("NAME");
         Long userId = resultSet.getLong("USER_ID");
 
-        UserDatabaseRepository userDatabaseRepository = new UserDatabaseRepository();
-        Optional<User> user = userDatabaseRepository.findById(userId);
+        Optional<User> user = UserDatabaseRepository.getInstance().findById(userId);
 
         return new Category.Builder()
                 .withId(id)
@@ -101,12 +101,21 @@ public class CategoryDatabaseRepository extends AbstractRepository<Category> {
 
     @Override
     public void delete(Category entity) {
-
+        //delete
     }
 
     @Override
     public void update(Category entity) {
+        try (Connection connection = DatabaseConnection.connectToDatabase()) {
+            try (PreparedStatement statement = connection.prepareStatement(UPDATE_CATEGORY_QUERY)) {
+                statement.setString(1, entity.getName());
+                statement.setLong(2, entity.getId());
 
+                statement.executeUpdate();
+            }
+        } catch (SQLException | IOException e) {
+            throw new RepositoryAccessException(e);
+        }
     }
 
     public Optional<Category> findCategoryByName(String categoryName, User user) {

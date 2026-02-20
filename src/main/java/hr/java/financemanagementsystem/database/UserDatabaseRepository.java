@@ -15,7 +15,19 @@ public class UserDatabaseRepository extends AbstractRepository<User> {
     private static final String FIND_ALL_QUERY = "SELECT ID, FIRST_NAME, LAST_NAME, USERNAME, PASSWORD FROM USERS";
     private static final String SAVE_QUERY = "INSERT INTO USERS (FIRST_NAME, LAST_NAME, USERNAME, PASSWORD) VALUES (?,?,?,?)";
     private static final String FIND_BY_USERNAME_QUERY = "SELECT ID, FIRST_NAME, LAST_NAME, USERNAME, PASSWORD FROM USERS WHERE USERNAME=?";
-    private static final String UPDATE_QUERY = "UPDATE USERS SET FIRST_NAME=?, LAST_NAME=?, USERNAME=?, PASSWORD=? WHERE ID=?";
+    private static final String UPDATE_USER_QUERY = "UPDATE USERS SET FIRST_NAME=?, LAST_NAME=?, USERNAME=?, PASSWORD=? WHERE ID=?";
+
+    private static UserDatabaseRepository instance;
+
+    private UserDatabaseRepository() {}
+
+    public static UserDatabaseRepository getInstance() {
+        if (Optional.ofNullable(instance).isEmpty()) {
+            instance = new UserDatabaseRepository();
+        }
+
+        return instance;
+    }
 
     @Override
     public Optional<User> findById(Long id) {
@@ -95,7 +107,7 @@ public class UserDatabaseRepository extends AbstractRepository<User> {
     @Override
     public void update(User entity) {
         try (Connection connection = DatabaseConnection.connectToDatabase()) {
-            try (PreparedStatement stmt = connection.prepareStatement(UPDATE_QUERY)) {
+            try (PreparedStatement stmt = connection.prepareStatement(UPDATE_USER_QUERY)) {
                 stmt.setString(1, entity.getFirstName());
                 stmt.setString(2, entity.getLastName());
                 stmt.setString(3, entity.getUsername());

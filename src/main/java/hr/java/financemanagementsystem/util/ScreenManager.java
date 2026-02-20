@@ -108,4 +108,12 @@ public class ScreenManager {
             throw new ScreenLoadingException(e);
         }
     }
+
+    public static void openEditCategoryScreen() {
+        try {
+            openScreen(APP_TITLE, "/hr/java/financemanagementsystem/editCategoryScreen.fxml");
+        } catch (IOException e) {
+            throw new ScreenLoadingException(e);
+        }
+    }
 }

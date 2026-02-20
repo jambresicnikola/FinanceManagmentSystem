@@ -2,14 +2,14 @@ package hr.java.financemanagementsystem.controller;
 
 import hr.java.financemanagementsystem.database.CategoryDatabaseRepository;
 import hr.java.financemanagementsystem.model.Category;
+import hr.java.financemanagementsystem.service.CategoryService;
 import hr.java.financemanagementsystem.service.DialogService;
 import hr.java.financemanagementsystem.service.UserService;
+import hr.java.financemanagementsystem.util.ScreenManager;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 import java.util.Optional;
 
@@ -18,10 +18,10 @@ public class ManageCategoriesScreenController {
     private TableView<Category> categoriesTableView;
 
     @FXML
-    private TableColumn<String, String> categoryDeleteTableColumn;
+    private TableColumn<Category, Void> categoryDeleteTableColumn;
 
     @FXML
-    private TableColumn<String, String> categoryEditTableColumn;
+    private TableColumn<Category, Void> categoryEditTableColumn;
 
     @FXML
     private TableColumn<Category, String> categoryNameTableColumn;
@@ -34,7 +34,28 @@ public class ManageCategoriesScreenController {
                 new ReadOnlyObjectWrapper<>(cellData.getValue().getName())
         );
 
+        categoryEditTableColumn.setCellFactory(column -> new TableCell<Category, Void>() {
+            private final Button editButton = new Button("Edit");
 
+            {
+                editButton.setOnAction(event -> {
+                    Category category = getTableView().getItems().get(getIndex());
+                    CategoryService.setCategoryToManage(category);
+
+                    ScreenManager.openEditCategoryScreen();
+                });
+            }
+
+            @Override
+            public void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(editButton);
+                }
+            }
+        });
 
         categoriesTableView.setItems(FXCollections.observableArrayList(CategoryDatabaseRepository.getInstance().findAll()));
     }

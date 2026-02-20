@@ -3,27 +3,44 @@ package hr.java.financemanagementsystem.service;
 import hr.java.financemanagementsystem.database.CategoryDatabaseRepository;
 import hr.java.financemanagementsystem.exception.CategoryValidationException;
 import hr.java.financemanagementsystem.model.Category;
-import hr.java.financemanagementsystem.model.User;
+import hr.java.financemanagementsystem.validation.CategoryValidator;
 
 public class CategoryService {
     private CategoryService() {}
 
-    public static void createNewCategory(String categoryName, User user) throws CategoryValidationException {
-        if (categoryName.isEmpty()) {
-            throw new CategoryValidationException("\nCategory name cannot be empty.");
-        }
+    private static Category categoryToManage;
 
-        if (CategoryDatabaseRepository.getInstance().findCategoryByName(categoryName, user).isPresent()) {
-            throw new CategoryValidationException("\nCategory already exists.");
-        }
+    public static Category getCategoryToManage() {
+        return categoryToManage;
+    }
 
-        Category category = new Category.Builder()
-                .withName(categoryName)
-                .withUser(user)
-                .build();
+    public static void setCategoryToManage(Category categoryToManage) {
+        CategoryService.categoryToManage = categoryToManage;
+    }
+
+    public static void createNewCategory(Category category) throws CategoryValidationException {
+        CategoryValidator.validateCategory(category);
+
+        checkIfCategoryExists(category);
 
         CategoryDatabaseRepository.getInstance().save(category);
 
         DialogService.information("Category created", "Category has been successfully created.");
+    }
+
+    public static void editCategory() throws CategoryValidationException {
+        CategoryValidator.validateCategory(categoryToManage);
+
+        checkIfCategoryExists(categoryToManage);
+
+        CategoryDatabaseRepository.getInstance().update(categoryToManage);
+
+        DialogService.information("Changes successful", "Category has been successfully updated.");
+    }
+
+    private static void checkIfCategoryExists(Category category) throws CategoryValidationException {
+        if (CategoryDatabaseRepository.getInstance().findCategoryByName(category.getName(), UserService.getLoggedInUser()).isPresent()) {
+            throw new CategoryValidationException("\nCategory already exists.");
+        }
     }
 }
