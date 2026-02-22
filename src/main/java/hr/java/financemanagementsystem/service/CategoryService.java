@@ -3,6 +3,7 @@ package hr.java.financemanagementsystem.service;
 import hr.java.financemanagementsystem.database.CategoryDatabaseRepository;
 import hr.java.financemanagementsystem.exception.CategoryValidationException;
 import hr.java.financemanagementsystem.model.Category;
+import hr.java.financemanagementsystem.util.ScreenManager;
 import hr.java.financemanagementsystem.validation.CategoryValidator;
 
 public class CategoryService {
@@ -36,11 +37,17 @@ public class CategoryService {
         CategoryDatabaseRepository.getInstance().update(categoryToManage);
 
         DialogService.information("Changes successful", "Category has been successfully updated.");
+
+        ScreenManager.openManageCategoriesScreen();
     }
 
     private static void checkIfCategoryExists(Category category) throws CategoryValidationException {
         if (CategoryDatabaseRepository.getInstance().findCategoryByName(category.getName(), UserService.getLoggedInUser()).isPresent()) {
             throw new CategoryValidationException("\nCategory already exists.");
         }
+    }
+
+    public static void deleteCategory(Category category) {
+        CategoryDatabaseRepository.getInstance().delete(category);
     }
 }

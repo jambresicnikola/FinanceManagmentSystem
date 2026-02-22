@@ -18,6 +18,7 @@ public class CategoryDatabaseRepository extends AbstractRepository<Category> {
     private static final String SAVE_CATEGORY_QUERY = "INSERT INTO CATEGORIES (NAME, USER_ID) VALUES (?, ?)";
     private static final String FIND_ALL_CATEGORIES_QUERY = "SELECT ID, NAME, USER_ID FROM CATEGORIES WHERE USER_ID=?";
     private static final String UPDATE_CATEGORY_QUERY = "UPDATE CATEGORIES SET NAME=? WHERE ID=?";
+    private static final String DELETE_CATEGORY_QUERY = "DELETE FROM CATEGORIES WHERE ID=?";
 
     private static CategoryDatabaseRepository instance;
 
@@ -101,7 +102,15 @@ public class CategoryDatabaseRepository extends AbstractRepository<Category> {
 
     @Override
     public void delete(Category entity) {
-        //delete
+        try (Connection connection = DatabaseConnection.connectToDatabase()) {
+            try (PreparedStatement statement = connection.prepareStatement(DELETE_CATEGORY_QUERY)) {
+                statement.setLong(1, entity.getId());
+
+                statement.executeUpdate();
+            }
+        } catch (SQLException | IOException e) {
+            throw new RepositoryAccessException(e);
+        }
     }
 
     @Override

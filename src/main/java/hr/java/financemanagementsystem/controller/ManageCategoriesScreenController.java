@@ -6,6 +6,7 @@ import hr.java.financemanagementsystem.service.CategoryService;
 import hr.java.financemanagementsystem.service.DialogService;
 import hr.java.financemanagementsystem.service.UserService;
 import hr.java.financemanagementsystem.util.ScreenManager;
+import hr.java.financemanagementsystem.util.TableUtils;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -34,28 +35,17 @@ public class ManageCategoriesScreenController {
                 new ReadOnlyObjectWrapper<>(cellData.getValue().getName())
         );
 
-        categoryEditTableColumn.setCellFactory(column -> new TableCell<Category, Void>() {
-            private final Button editButton = new Button("Edit");
+        categoryEditTableColumn.setCellFactory(TableUtils.createButtonColumn("Edit", (Category category) -> {
+            CategoryService.setCategoryToManage(category);
+            ScreenManager.openEditCategoryScreen();
+        }));
 
-            {
-                editButton.setOnAction(event -> {
-                    Category category = getTableView().getItems().get(getIndex());
-                    CategoryService.setCategoryToManage(category);
-
-                    ScreenManager.openEditCategoryScreen();
-                });
+        categoryDeleteTableColumn.setCellFactory(TableUtils.createButtonColumn("Delete", (Category category) -> {
+            if (DialogService.confirmation("Delete Category", "Are you sure you want to delete this category?")) {
+                CategoryService.deleteCategory(category);
+                categoriesTableView.getItems().remove(category);
             }
-
-            @Override
-            public void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty) {
-                    setGraphic(null);
-                } else {
-                    setGraphic(editButton);
-                }
-            }
-        });
+        }));
 
         categoriesTableView.setItems(FXCollections.observableArrayList(CategoryDatabaseRepository.getInstance().findAll()));
     }
