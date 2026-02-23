@@ -19,7 +19,7 @@ public class CategoryService {
         CategoryService.categoryToManage = categoryToManage;
     }
 
-    public static void createNewCategory(Category category) throws CategoryValidationException {
+    public static void createNewCategory(Category category) {
         CategoryValidator.validateCategory(category);
 
         checkIfCategoryExists(category);
@@ -29,7 +29,7 @@ public class CategoryService {
         DialogService.information("Category created", "Category has been successfully created.");
     }
 
-    public static void editCategory() throws CategoryValidationException {
+    public static void editCategory() {
         CategoryValidator.validateCategory(categoryToManage);
 
         checkIfCategoryExists(categoryToManage);

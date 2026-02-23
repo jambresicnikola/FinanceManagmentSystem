@@ -19,6 +19,7 @@ public class MenuBarIncludeController {
     }
 
     public void addTransactions() {
+        ScreenManager.openAddTransactionScreen();
     }
 
 
