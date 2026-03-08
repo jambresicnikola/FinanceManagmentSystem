@@ -124,4 +124,12 @@ public class ScreenManager {
             throw new ScreenLoadingException(e);
         }
     }
+
+    public static void openManageTransactionsScreen() {
+        try {
+            openScreen(APP_TITLE, "/hr/java/financemanagementsystem/manageTransactionsScreen.fxml");
+        } catch (IOException e) {
+            throw new ScreenLoadingException(e);
+        }
+    }
 }

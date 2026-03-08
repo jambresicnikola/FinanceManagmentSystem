@@ -8,6 +8,7 @@ import hr.java.financemanagementsystem.model.TransactionType;
 import hr.java.financemanagementsystem.service.DialogService;
 import hr.java.financemanagementsystem.service.TransactionService;
 import hr.java.financemanagementsystem.service.UserService;
+import hr.java.financemanagementsystem.validation.NumberValidator;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -45,13 +46,8 @@ public class AddTransactionScreenController {
         String description = transactionDescriptionTextField.getText();
         Integer amount = transactionAmountSpinner.getValue();
 
-        BigDecimal price;
         String priceString = transactionPriceTextField.getText().trim();
-        try {
-            price = new BigDecimal(priceString);
-        } catch (NumberFormatException e) {
-            price = null;
-        }
+        BigDecimal price = NumberValidator.validatePositiveBigDecimal(priceString);
 
         String categoryString = transactionCategoryComboBox.getSelectionModel().getSelectedItem();
         Category category = CategoryDatabaseRepository.getInstance()

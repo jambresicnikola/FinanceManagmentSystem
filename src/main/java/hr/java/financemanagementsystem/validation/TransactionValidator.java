@@ -19,6 +19,10 @@ public class TransactionValidator {
             errorMessage.append("\nTransaction price cannot be empty and must be a positive number (e.g. 100.00).");
         }
 
+        if (transaction.getPrice() != null && transaction.getPrice().compareTo(BigDecimal.valueOf(10000000)) > 0) {
+            errorMessage.append("\nTransaction price cannot be greater than 10000000.");
+        }
+
         if (transaction.getCategory() == null) {
             errorMessage.append("\nTransaction category not selected.");
         }

@@ -16,12 +16,12 @@ public class MenuBarIncludeController {
     }
 
     public void manageTransactions() {
+        ScreenManager.openManageTransactionsScreen();
     }
 
     public void addTransactions() {
         ScreenManager.openAddTransactionScreen();
     }
-
 
     public void manageAccount() {
         ScreenManager.openManageAccountScreen();

@@ -1,14 +1,19 @@
 package hr.java.financemanagementsystem.database;
 
+import hr.java.financemanagementsystem.dto.TransactionFilterForm;
 import hr.java.financemanagementsystem.exception.RepositoryAccessException;
+import hr.java.financemanagementsystem.model.Category;
 import hr.java.financemanagementsystem.model.Transaction;
+import hr.java.financemanagementsystem.model.TransactionType;
+import hr.java.financemanagementsystem.model.User;
+import hr.java.financemanagementsystem.service.UserService;
 import hr.java.financemanagementsystem.util.DatabaseConnection;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.math.BigDecimal;
+import java.sql.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +23,11 @@ public class TransactionDatabaseRepository extends AbstractRepository<Transactio
             INSERT INTO TRANSACTIONS
             (DESCRIPTION, AMOUNT, PRICE, CATEGORY_ID, TRANSACTION_DATE, TRANSACTION_TYPE, USER_ID) 
             VALUES (?, ?, ?, ?, ?, ?, ?)
+            """;
+    private static final String FIND_ALL_TRANSACTIONS_QUERY =
+            """
+            SELECT ID, DESCRIPTION, AMOUNT, PRICE, CATEGORY_ID, TRANSACTION_DATE, TRANSACTION_TYPE, USER_ID 
+            FROM TRANSACTIONS WHERE USER_ID = ?
             """;
 
     private TransactionDatabaseRepository() {}
@@ -39,7 +49,45 @@ public class TransactionDatabaseRepository extends AbstractRepository<Transactio
 
     @Override
     public List<Transaction> findAll() {
-        return List.of();
+        List<Transaction> transactions = new ArrayList<>();
+
+        try (Connection connection = DatabaseConnection.connectToDatabase()) {
+            try (PreparedStatement stmt = connection.prepareStatement(FIND_ALL_TRANSACTIONS_QUERY)) {
+                stmt.setLong(1, UserService.getLoggedInUser().getId());
+
+                ResultSet rs = stmt.executeQuery();
+                while (rs.next()) {
+                    Transaction transaction = extractTransactionFromResultSet(rs);
+                    transactions.add(transaction);
+                }
+            }
+        } catch (SQLException | IOException e) {
+            throw new RepositoryAccessException(e);
+        }
+
+        return transactions;
+    }
+
+    private Transaction extractTransactionFromResultSet(ResultSet rs) throws SQLException {
+        Long id = rs.getLong("ID");
+        String description = rs.getString("DESCRIPTION");
+        Integer amount = rs.getInt("AMOUNT");
+        BigDecimal price = rs.getBigDecimal("PRICE");
+        Category category = CategoryDatabaseRepository.getInstance().findById(rs.getLong("CATEGORY_ID")).get();
+        LocalDate date = rs.getDate("TRANSACTION_DATE").toLocalDate();
+        TransactionType transactionType = TransactionType.valueOf(rs.getString("TRANSACTION_TYPE"));
+        User user = UserDatabaseRepository.getInstance().findById(rs.getLong("USER_ID")).get();
+
+        return new Transaction.Builder()
+                .withId(id)
+                .withDescription(description)
+                .withAmount(amount)
+                .withPrice(price)
+                .withCategory(category)
+                .withDate(date)
+                .withTransactionType(transactionType)
+                .withUser(user)
+                .build();
     }
 
     @Override
@@ -69,5 +117,63 @@ public class TransactionDatabaseRepository extends AbstractRepository<Transactio
     @Override
     public void update(Transaction entity) {
 
+    }
+
+    public List<Transaction> findByFilters(TransactionFilterForm transactionFilterForm) {
+        StringBuilder filterQuery = new StringBuilder(FIND_ALL_TRANSACTIONS_QUERY);
+        List<Object> params = new ArrayList<>();
+
+        if (!transactionFilterForm.getDescription().isEmpty()) {
+            filterQuery.append(" AND LOWER(DESCRIPTION) LIKE ?");
+            params.add("%" + transactionFilterForm.getDescription().toLowerCase() + "%");
+        }
+        if (transactionFilterForm.getCategory() != null) {
+            filterQuery.append(" AND CATEGORY_ID = ?");
+            params.add(transactionFilterForm.getCategory().getId());
+        }
+        if (transactionFilterForm.getTransactionType() != null) {
+            filterQuery.append(" AND TRANSACTION_TYPE = ?");
+            params.add(transactionFilterForm.getTransactionType().toString());
+        }
+        if (transactionFilterForm.getPriceFrom() != null) {
+            filterQuery.append(" AND PRICE >= ?");
+            params.add(transactionFilterForm.getPriceFrom());
+        }
+        if (transactionFilterForm.getPriceTo() != null) {
+            filterQuery.append(" AND PRICE <= ?");
+            params.add(transactionFilterForm.getPriceTo());
+        }
+        if (transactionFilterForm.getFromDate() != null) {
+            filterQuery.append(" AND TRANSACTION_DATE >= ?");
+            params.add(transactionFilterForm.getFromDate());
+        }
+        if (transactionFilterForm.getToDate() != null) {
+            filterQuery.append(" AND TRANSACTION_DATE <= ?");
+            params.add(transactionFilterForm.getToDate());
+        }
+
+        List<Transaction> transactions = new ArrayList<>();
+
+        try (Connection connection = DatabaseConnection.connectToDatabase()) {
+            try (PreparedStatement stmt = connection.prepareStatement(filterQuery.toString())) {
+                stmt.setLong(1, UserService.getLoggedInUser().getId());
+
+                Integer parameterCounter = 2;
+                for (Object param : params) {
+                    stmt.setObject(parameterCounter, param);
+                    parameterCounter++;
+                }
+
+                ResultSet rs = stmt.executeQuery();
+
+                while (rs.next()) {
+                    transactions.add(extractTransactionFromResultSet(rs));
+                }
+            }
+        } catch (SQLException | IOException e) {
+            throw new RepositoryAccessException(e);
+        }
+
+        return transactions;
     }
 }

@@ -1,8 +1,11 @@
 package hr.java.financemanagementsystem.service;
 
 import hr.java.financemanagementsystem.database.TransactionDatabaseRepository;
+import hr.java.financemanagementsystem.dto.TransactionFilterForm;
 import hr.java.financemanagementsystem.model.Transaction;
 import hr.java.financemanagementsystem.validation.TransactionValidator;
+
+import java.util.List;
 
 public class TransactionService {
     private TransactionService() {}
@@ -13,5 +16,9 @@ public class TransactionService {
         TransactionDatabaseRepository.getInstance().save(transaction);
 
         DialogService.information("Transaction added", "You have successfully added the transaction.");
+    }
+
+    public static List<Transaction> filterTransactions(TransactionFilterForm transactionFilterForm) {
+        return TransactionDatabaseRepository.getInstance().findByFilters(transactionFilterForm);
     }
 }
