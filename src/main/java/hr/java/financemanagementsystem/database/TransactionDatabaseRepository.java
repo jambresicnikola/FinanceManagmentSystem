@@ -28,6 +28,12 @@ public class TransactionDatabaseRepository extends AbstractRepository<Transactio
             """
             SELECT ID, DESCRIPTION, AMOUNT, PRICE, CATEGORY_ID, TRANSACTION_DATE, TRANSACTION_TYPE, USER_ID 
             FROM TRANSACTIONS WHERE USER_ID = ?
+            ORDER BY ID DESC
+            """;
+    private static final String FILTER_TRANSACTIONS_QUERY =
+            """
+            SELECT ID, DESCRIPTION, AMOUNT, PRICE, CATEGORY_ID, TRANSACTION_DATE, TRANSACTION_TYPE, USER_ID 
+            FROM TRANSACTIONS WHERE USER_ID = ?
             """;
     private static final String UPDATE_TRANSACTION_QUERY =
             """
@@ -44,6 +50,19 @@ public class TransactionDatabaseRepository extends AbstractRepository<Transactio
             """
             DELETE FROM TRANSACTIONS
             WHERE CATEGORY_ID = ?;
+            """;
+    private static final String FIND_TOTAL_INCOME_QUERY = """
+            SELECT SUM(PRICE) AS TOTAL_INCOME
+            FROM TRANSACTIONS WHERE USER_ID = ? AND TRANSACTION_TYPE = 'INCOME'
+            """;
+    private static final String FIND_TOTAL_OUTCOME_QUERY = """
+            SELECT SUM(PRICE) AS TOTAL_OUTCOME
+            FROM TRANSACTIONS WHERE USER_ID = ? AND TRANSACTION_TYPE = 'OUTCOME'
+            """;
+    private static final String DELETE_TRANSACTIONS_BY_USER_QUERY =
+            """
+            DELETE FROM TRANSACTIONS
+            WHERE USER_ID = ?;
             """;
 
     private TransactionDatabaseRepository() {}
@@ -158,7 +177,7 @@ public class TransactionDatabaseRepository extends AbstractRepository<Transactio
     }
 
     public List<Transaction> findByFilters(TransactionFilterForm transactionFilterForm) {
-        StringBuilder filterQuery = new StringBuilder(FIND_ALL_TRANSACTIONS_QUERY);
+        StringBuilder filterQuery = new StringBuilder(FILTER_TRANSACTIONS_QUERY);
         List<Object> params = new ArrayList<>();
 
         if (!transactionFilterForm.getDescription().isEmpty()) {
@@ -190,6 +209,8 @@ public class TransactionDatabaseRepository extends AbstractRepository<Transactio
             params.add(transactionFilterForm.getToDate());
         }
 
+        filterQuery.append(" ORDER BY ID DESC");
+
         List<Transaction> transactions = new ArrayList<>();
 
         try (Connection connection = DatabaseConnection.connectToDatabase()) {
@@ -219,6 +240,49 @@ public class TransactionDatabaseRepository extends AbstractRepository<Transactio
         try (Connection connection = DatabaseConnection.connectToDatabase()) {
             try (PreparedStatement stmt = connection.prepareStatement(DELETE_TRANSACTIONS_BY_CATEGORY_QUERY)) {
                 stmt.setLong(1, category.getId());
+
+                stmt.executeUpdate();
+            }
+        } catch (SQLException | IOException e) {
+            throw new RepositoryAccessException(e);
+        }
+    }
+
+    public List<Transaction> findLatestTransactions() {
+        return findAll().stream().limit(5).toList();
+    }
+
+    public BigDecimal findTotalIncome() {
+        return findTotal(FIND_TOTAL_INCOME_QUERY, "TOTAL_INCOME");
+    }
+
+    public BigDecimal findTotalOutcome() {
+        return findTotal(FIND_TOTAL_OUTCOME_QUERY, "TOTAL_OUTCOME");
+    }
+
+    private BigDecimal findTotal(String query, String columnName) {
+        try (Connection connection = DatabaseConnection.connectToDatabase()) {
+            try (PreparedStatement stmt = connection.prepareStatement(query)) {
+                stmt.setLong(1, UserService.getLoggedInUser().getId());
+
+                ResultSet rs = stmt.executeQuery();
+
+                if (rs.next()) {
+                    BigDecimal result = rs.getBigDecimal(columnName);
+                    return result != null ? result : BigDecimal.ZERO;
+                }
+            }
+        } catch (SQLException | IOException e) {
+            throw new RepositoryAccessException(e);
+        }
+
+        return BigDecimal.ZERO;
+    }
+
+    public void deleteTransactionsByUser(User loggedInUser) {
+        try (Connection connection = DatabaseConnection.connectToDatabase()) {
+            try (PreparedStatement stmt = connection.prepareStatement(DELETE_TRANSACTIONS_BY_USER_QUERY)) {
+                stmt.setLong(1, loggedInUser.getId());
 
                 stmt.executeUpdate();
             }

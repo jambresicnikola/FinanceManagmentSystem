@@ -19,6 +19,7 @@ public class CategoryDatabaseRepository extends AbstractRepository<Category> {
     private static final String FIND_ALL_CATEGORIES_QUERY = "SELECT ID, NAME, USER_ID FROM CATEGORIES WHERE USER_ID=?";
     private static final String UPDATE_CATEGORY_QUERY = "UPDATE CATEGORIES SET NAME=? WHERE ID=?";
     private static final String DELETE_CATEGORY_QUERY = "DELETE FROM CATEGORIES WHERE ID=?";
+    private static final String DELETE_CATEGORIES_BY_USER = "DELETE FROM CATEGORIES WHERE USER_ID=?";
 
     private static CategoryDatabaseRepository instance;
 
@@ -144,5 +145,17 @@ public class CategoryDatabaseRepository extends AbstractRepository<Category> {
         }
 
         return Optional.empty();
+    }
+
+    public void deleteCategoriesByUser(User loggedInUser) {
+        try (Connection connection = DatabaseConnection.connectToDatabase()) {
+            try (PreparedStatement statement = connection.prepareStatement(DELETE_CATEGORIES_BY_USER)) {
+                statement.setLong(1, loggedInUser.getId());
+
+                statement.executeUpdate();
+            }
+        } catch (SQLException | IOException e) {
+            throw new RepositoryAccessException(e);
+        }
     }
 }

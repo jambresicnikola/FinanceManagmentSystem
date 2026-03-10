@@ -16,6 +16,7 @@ public class UserDatabaseRepository extends AbstractRepository<User> {
     private static final String SAVE_QUERY = "INSERT INTO USERS (FIRST_NAME, LAST_NAME, USERNAME, PASSWORD) VALUES (?,?,?,?)";
     private static final String FIND_BY_USERNAME_QUERY = "SELECT ID, FIRST_NAME, LAST_NAME, USERNAME, PASSWORD FROM USERS WHERE USERNAME=?";
     private static final String UPDATE_USER_QUERY = "UPDATE USERS SET FIRST_NAME=?, LAST_NAME=?, USERNAME=?, PASSWORD=? WHERE ID=?";
+    private static final String DELETE_USER_QUERY = "DELETE FROM USERS WHERE ID=?";
 
     private static UserDatabaseRepository instance;
 
@@ -101,7 +102,15 @@ public class UserDatabaseRepository extends AbstractRepository<User> {
 
     @Override
     public void delete(User entity) {
-        //delete user
+        try (Connection connection = DatabaseConnection.connectToDatabase()) {
+            try (PreparedStatement stmt = connection.prepareStatement(DELETE_USER_QUERY)) {
+                stmt.setLong(1, entity.getId());
+
+                stmt.executeUpdate();
+            }
+        } catch (SQLException | IOException e) {
+            throw new RepositoryAccessException(e);
+        }
     }
 
     @Override

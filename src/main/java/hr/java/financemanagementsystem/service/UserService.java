@@ -1,6 +1,8 @@
 package hr.java.financemanagementsystem.service;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
+import hr.java.financemanagementsystem.database.CategoryDatabaseRepository;
+import hr.java.financemanagementsystem.database.TransactionDatabaseRepository;
 import hr.java.financemanagementsystem.database.UserDatabaseRepository;
 import hr.java.financemanagementsystem.dto.UserEditProfileForm;
 import hr.java.financemanagementsystem.dto.UserRegistrationForm;
@@ -120,5 +122,19 @@ public class UserService {
         DialogService.information("Password changed", "You have successfully changed your password.");
 
         ScreenManager.getPasswordStage().close();
+    }
+
+    public static void deleteUserAccount() {
+        if (DialogService.confirmation("Are you sure you want to delete your account?",
+                "If you delete your account you cannot get it back!")) {
+
+            TransactionDatabaseRepository.getInstance().deleteTransactionsByUser(loggedInUser);
+            CategoryDatabaseRepository.getInstance().deleteCategoriesByUser(loggedInUser);
+            UserDatabaseRepository.getInstance().delete(loggedInUser);
+
+            DialogService.information("Account deleted", "You have successfully deleted your account.");
+
+            ScreenManager.openWelcomeScreen();
+        }
     }
 }

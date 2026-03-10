@@ -40,7 +40,7 @@ public class ManageAccountScreenController {
     }
 
     public void deleteAccount() {
-
+        UserService.deleteUserAccount();
     }
 
     public void changePassword() {
