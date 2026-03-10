@@ -29,6 +29,22 @@ public class TransactionDatabaseRepository extends AbstractRepository<Transactio
             SELECT ID, DESCRIPTION, AMOUNT, PRICE, CATEGORY_ID, TRANSACTION_DATE, TRANSACTION_TYPE, USER_ID 
             FROM TRANSACTIONS WHERE USER_ID = ?
             """;
+    private static final String UPDATE_TRANSACTION_QUERY =
+            """
+            UPDATE TRANSACTIONS
+            SET DESCRIPTION = ?, AMOUNT = ?, PRICE = ?, CATEGORY_ID = ?, TRANSACTION_DATE = ?, TRANSACTION_TYPE = ?
+            WHERE ID = ?;
+            """;
+    private static final String DELETE_TRANSACTION_QUERY =
+            """
+            DELETE FROM TRANSACTIONS
+            WHERE ID = ?;
+            """;
+    private static final String DELETE_TRANSACTIONS_BY_CATEGORY_QUERY =
+            """
+            DELETE FROM TRANSACTIONS
+            WHERE CATEGORY_ID = ?;
+            """;
 
     private TransactionDatabaseRepository() {}
 
@@ -111,12 +127,34 @@ public class TransactionDatabaseRepository extends AbstractRepository<Transactio
 
     @Override
     public void delete(Transaction entity) {
+        try (Connection connection = DatabaseConnection.connectToDatabase()) {
+            try (PreparedStatement stmt = connection.prepareStatement(DELETE_TRANSACTION_QUERY)) {
+                stmt.setLong(1, entity.getId());
 
+                stmt.executeUpdate();
+            }
+        } catch (SQLException | IOException e) {
+            throw new RepositoryAccessException(e);
+        }
     }
 
     @Override
     public void update(Transaction entity) {
+        try (Connection connection = DatabaseConnection.connectToDatabase()) {
+            try (PreparedStatement stmt = connection.prepareStatement(UPDATE_TRANSACTION_QUERY)) {
+                stmt.setString(1, entity.getDescription());
+                stmt.setInt(2, entity.getAmount());
+                stmt.setBigDecimal(3, entity.getPrice());
+                stmt.setLong(4, entity.getCategory().getId());
+                stmt.setDate(5, Date.valueOf(entity.getDate()));
+                stmt.setString(6, entity.getTransactionType().toString());
+                stmt.setLong(7, entity.getId());
 
+                stmt.executeUpdate();
+            }
+        } catch (SQLException | IOException e) {
+            throw new RepositoryAccessException(e);
+        }
     }
 
     public List<Transaction> findByFilters(TransactionFilterForm transactionFilterForm) {
@@ -175,5 +213,17 @@ public class TransactionDatabaseRepository extends AbstractRepository<Transactio
         }
 
         return transactions;
+    }
+
+    public void deleteTransactionsByCategory(Category category) {
+        try (Connection connection = DatabaseConnection.connectToDatabase()) {
+            try (PreparedStatement stmt = connection.prepareStatement(DELETE_TRANSACTIONS_BY_CATEGORY_QUERY)) {
+                stmt.setLong(1, category.getId());
+
+                stmt.executeUpdate();
+            }
+        } catch (SQLException | IOException e) {
+            throw new RepositoryAccessException(e);
+        }
     }
 }

@@ -4,6 +4,7 @@ import hr.java.financemanagementsystem.database.CategoryDatabaseRepository;
 import hr.java.financemanagementsystem.model.Category;
 import hr.java.financemanagementsystem.service.CategoryService;
 import hr.java.financemanagementsystem.service.DialogService;
+import hr.java.financemanagementsystem.service.TransactionService;
 import hr.java.financemanagementsystem.service.UserService;
 import hr.java.financemanagementsystem.util.ScreenManager;
 import hr.java.financemanagementsystem.util.TableUtils;
@@ -41,7 +42,9 @@ public class ManageCategoriesScreenController {
         }));
 
         categoryDeleteTableColumn.setCellFactory(TableUtils.createButtonColumn("Delete", (Category category) -> {
-            if (DialogService.confirmation("Delete Category", "Are you sure you want to delete this category?")) {
+            if (DialogService.confirmation("Delete Category", "Are you sure you want to delete this category?" +
+                    "\nNOTE: You will delete all transactions from that category!")) {
+                TransactionService.deleteTransactionsByCategory(category);
                 CategoryService.deleteCategory(category);
                 categoriesTableView.getItems().remove(category);
             }

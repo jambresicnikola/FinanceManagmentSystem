@@ -6,8 +6,10 @@ import hr.java.financemanagementsystem.dto.TransactionFilterForm;
 import hr.java.financemanagementsystem.model.Category;
 import hr.java.financemanagementsystem.model.Transaction;
 import hr.java.financemanagementsystem.model.TransactionType;
+import hr.java.financemanagementsystem.service.DialogService;
 import hr.java.financemanagementsystem.service.TransactionService;
 import hr.java.financemanagementsystem.service.UserService;
+import hr.java.financemanagementsystem.util.ScreenManager;
 import hr.java.financemanagementsystem.util.TableUtils;
 import hr.java.financemanagementsystem.validation.NumberValidator;
 import javafx.beans.property.ReadOnlyObjectWrapper;
@@ -62,10 +64,14 @@ public class ManageTransactionsScreenController {
                 cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getDate()));
 
         editTableColumn.setCellFactory(TableUtils.createButtonColumn("Edit", (Transaction transaction) -> {
-
+            TransactionService.setTransactionToManage(transaction);
+            ScreenManager.openEditTransactionsScreen();
         }));
         deleteTableColumn.setCellFactory(TableUtils.createButtonColumn("Delete", (Transaction transaction) -> {
-
+            if (DialogService.confirmation("Delete Transaction", "Are you sure you want to delete this transaction?")) {
+                TransactionService.deleteTransaction(transaction);
+                transactionsTableView.getItems().remove(transaction);
+            }
         }));
 
         transactionsTableView.setItems(FXCollections.observableArrayList(TransactionDatabaseRepository.getInstance().findAll()));

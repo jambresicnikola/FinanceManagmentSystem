@@ -2,20 +2,20 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.Spinner?>
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.java.financemanagementsystem.controller.AddTransactionScreenController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.java.financemanagementsystem.controller.EditTransactionScreenController">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-      <ColumnConstraints />
+        <ColumnConstraints />
     </columnConstraints>
     <rowConstraints>
         <RowConstraints maxHeight="168.0000244140625" minHeight="10.0" prefHeight="131.99998168945314" vgrow="SOMETIMES" />
@@ -24,7 +24,7 @@
     </rowConstraints>
     <children>
         <fx:include source="menuBarInclude.fxml" />
-        <GridPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="330.0" prefWidth="450.0" style="-fx-background-color: #5fa8d3; -fx-background-radius: 25;" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" >
+        <GridPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="330.0" prefWidth="450.0" style="-fx-background-color: #5fa8d3; -fx-background-radius: 25;" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="170.199951171875" minWidth="10.0" prefWidth="121.6" />
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="228.79999999999998" minWidth="10.0" prefWidth="228.79999999999998" />
@@ -103,7 +103,7 @@
                 <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
             </padding>
         </GridPane>
-        <Label text="Add transaction" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+        <Label text="Edit transaction" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
             <GridPane.margin>
                 <Insets bottom="20.0" />
             </GridPane.margin>
@@ -111,7 +111,7 @@
                 <Font name="Arial" size="24.0" />
             </font>
         </Label>
-        <Button mnemonicParsing="false" onAction="#addNewTransaction" text="Add" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+        <Button mnemonicParsing="false" onAction="#confirmChanges" text="Confirm changes" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
             <GridPane.margin>
                 <Insets />
             </GridPane.margin>
