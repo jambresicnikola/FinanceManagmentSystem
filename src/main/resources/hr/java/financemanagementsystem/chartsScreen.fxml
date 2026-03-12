@@ -47,7 +47,7 @@
               </rowConstraints>
                <children>
                   <Label text="Income per month" textFill="WHITE" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                  <AreaChart fx:id="incomePerMonthAreaChart" GridPane.rowIndex="1">
+                  <AreaChart fx:id="incomePerMonthAreaChart" legendVisible="false" GridPane.rowIndex="1">
                     <xAxis>
                       <CategoryAxis side="BOTTOM" />
                     </xAxis>

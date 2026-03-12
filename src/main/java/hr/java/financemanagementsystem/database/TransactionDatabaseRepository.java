@@ -50,13 +50,19 @@ public class TransactionDatabaseRepository extends AbstractRepository<Transactio
             DELETE FROM TRANSACTIONS
             WHERE CATEGORY_ID = ?;
             """;
-    private static final String FIND_TOTAL_INCOME_QUERY = """
-            SELECT SUM(PRICE) AS TOTAL_INCOME
-            FROM TRANSACTIONS WHERE USER_ID = ? AND TRANSACTION_TYPE = 'INCOME'
+    private static final String FIND_TOTAL_INCOME_LAST_30_DAYS_QUERY = """
+            SELECT SUM(PRICE) AS TOTAL_INCOME_LAST_30_DAYS
+            FROM TRANSACTIONS
+            WHERE USER_ID = ?
+              AND TRANSACTION_TYPE = 'INCOME'
+              AND TRANSACTION_DATE > CURDATE() - 30
             """;
-    private static final String FIND_TOTAL_OUTCOME_QUERY = """
-            SELECT SUM(PRICE) AS TOTAL_OUTCOME
-            FROM TRANSACTIONS WHERE USER_ID = ? AND TRANSACTION_TYPE = 'OUTCOME'
+    private static final String FIND_TOTAL_OUTCOME_LAST_30_DAYS_QUERY = """
+            SELECT SUM(PRICE) AS TOTAL_OUTCOME_LAST_30_DAYS
+            FROM TRANSACTIONS
+            WHERE USER_ID = ?
+              AND TRANSACTION_TYPE = 'OUTCOME'
+              AND TRANSACTION_DATE > CURDATE() - 30
             """;
     private static final String DELETE_TRANSACTIONS_BY_USER_QUERY =
             """
@@ -66,16 +72,21 @@ public class TransactionDatabaseRepository extends AbstractRepository<Transactio
     private static final String EXPENSES_PER_CATEGORY_QUERY = """
             SELECT SUM(PRICE) AS EXPENSE, CATEGORIES.NAME AS CATEGORY_NAME
             FROM TRANSACTIONS
-            JOIN CATEGORIES ON CATEGORIES.ID=TRANSACTIONS.CATEGORY_ID
-            WHERE TRANSACTIONS.USER_ID=? AND TRANSACTION_TYPE='OUTCOME'
-            GROUP BY CATEGORY_ID
+                     JOIN CATEGORIES ON CATEGORIES.ID = TRANSACTIONS.CATEGORY_ID
+            WHERE TRANSACTIONS.USER_ID = ?
+              AND TRANSACTION_TYPE = 'OUTCOME'
+              AND YEAR(TRANSACTION_DATE) = YEAR(CURRENT_DATE)
+            GROUP BY CATEGORY_ID;
+            
             """;
-    private static final String INCOME_PER_MONTH = """
+    private static final String INCOME_PER_MONTH_QUERY = """
             SELECT SUM(PRICE) AS INCOME, MONTHNAME(TRANSACTION_DATE) AS TRANSACTION_MONTH
             FROM TRANSACTIONS
-            WHERE USER_ID=? AND TRANSACTION_TYPE='INCOME'
+            WHERE USER_ID = ?
+              AND TRANSACTION_TYPE = 'INCOME'
+              AND YEAR(TRANSACTION_DATE) = YEAR(CURRENT_DATE)
             GROUP BY MONTH(TRANSACTION_DATE), TRANSACTION_MONTH
-            ORDER BY MONTH(TRANSACTION_DATE)
+            ORDER BY MONTH(TRANSACTION_DATE);
             """;
 
     private TransactionDatabaseRepository() {}
@@ -266,11 +277,11 @@ public class TransactionDatabaseRepository extends AbstractRepository<Transactio
     }
 
     public BigDecimal findTotalIncome() {
-        return findTotal(FIND_TOTAL_INCOME_QUERY, "TOTAL_INCOME");
+        return findTotal(FIND_TOTAL_INCOME_LAST_30_DAYS_QUERY, "TOTAL_INCOME_LAST_30_DAYS");
     }
 
     public BigDecimal findTotalOutcome() {
-        return findTotal(FIND_TOTAL_OUTCOME_QUERY, "TOTAL_OUTCOME");
+        return findTotal(FIND_TOTAL_OUTCOME_LAST_30_DAYS_QUERY, "TOTAL_OUTCOME_LAST_30_DAYS");
     }
 
     private BigDecimal findTotal(String query, String columnName) {
@@ -309,7 +320,7 @@ public class TransactionDatabaseRepository extends AbstractRepository<Transactio
     }
 
     public Map<String, BigDecimal> getAreaChartData() {
-        return getChartData(INCOME_PER_MONTH, "TRANSACTION_MONTH", "INCOME");
+        return getChartData(INCOME_PER_MONTH_QUERY, "TRANSACTION_MONTH", "INCOME");
     }
 
     public Map<String, BigDecimal> getChartData(String query, String keyColumn, String valueColumn) {

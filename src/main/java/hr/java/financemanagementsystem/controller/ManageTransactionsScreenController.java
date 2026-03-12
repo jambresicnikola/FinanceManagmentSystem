@@ -19,6 +19,7 @@ import javafx.scene.control.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ManageTransactionsScreenController {
@@ -50,11 +51,17 @@ public class ManageTransactionsScreenController {
     private TableColumn<Transaction, Void> deleteTableColumn;
 
     public void initialize() {
-        transactionCategoryComboBox.setItems(
-                FXCollections.observableArrayList(CategoryDatabaseRepository.getInstance().findAll().stream()
-                        .map(Category::getName)
-                        .toList()));
-        transactionTypeComboBox.setItems(FXCollections.observableArrayList(TransactionType.values()));
+        List<String> categories = new ArrayList<>();
+        categories.add(null);
+        categories.addAll(CategoryDatabaseRepository.getInstance().findAll().stream()
+                .map(Category::getName)
+                .toList());
+        transactionCategoryComboBox.setItems(FXCollections.observableArrayList(categories));
+
+        List<TransactionType> transactionTypes = new ArrayList<>();
+        transactionTypes.add(null);
+        transactionTypes.addAll(List.of(TransactionType.values()));
+        transactionTypeComboBox.setItems(FXCollections.observableArrayList(transactionTypes));
 
         descriptionTableColumn.setCellValueFactory(
                 cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getDescription()));
