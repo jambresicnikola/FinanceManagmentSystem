@@ -4,7 +4,7 @@ import hr.java.financemanagementsystem.dto.UserRegistrationForm;
 import hr.java.financemanagementsystem.exception.UserValidationException;
 import hr.java.financemanagementsystem.service.DialogService;
 import hr.java.financemanagementsystem.service.UserService;
-import hr.java.financemanagementsystem.util.ScreenManager;
+import hr.java.financemanagementsystem.util.SceneManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -38,6 +38,6 @@ public class SignUpScreenController {
     }
 
     public void back() {
-        ScreenManager.openWelcomeScreen();
+        SceneManager.openWelcomeScreen();
     }
 }

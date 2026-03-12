@@ -4,7 +4,7 @@ import hr.java.financemanagementsystem.database.TransactionDatabaseRepository;
 import hr.java.financemanagementsystem.model.Transaction;
 import hr.java.financemanagementsystem.model.TransactionType;
 import hr.java.financemanagementsystem.service.UserService;
-import hr.java.financemanagementsystem.util.ScreenManager;
+import hr.java.financemanagementsystem.util.SceneManager;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -50,6 +50,6 @@ public class HomeScreenController {
     }
 
     public void viewAllTransactions() {
-        ScreenManager.openManageTransactionsScreen();
+        SceneManager.openManageTransactionsScreen();
     }
 }

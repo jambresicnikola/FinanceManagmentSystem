@@ -21,8 +21,7 @@
         </Menu>
         <Menu mnemonicParsing="false" text="Overview">
             <items>
-                <MenuItem mnemonicParsing="false" text="Summary" />
-                <MenuItem mnemonicParsing="false" text="Charts" />
+                <MenuItem mnemonicParsing="false" onAction="#charts" text="Charts" />
             </items>
         </Menu>
         <Menu mnemonicParsing="false" text="Categories">
@@ -33,7 +32,7 @@
         </Menu>
         <Menu mnemonicParsing="false" text="About">
             <items>
-                <MenuItem mnemonicParsing="false" text="About Finance Management System" />
+                <MenuItem mnemonicParsing="false" onAction="#about" text="About Finance Management System" />
             </items>
         </Menu>
         <Menu mnemonicParsing="false" text="Account">

@@ -12,10 +12,9 @@ import hr.java.financemanagementsystem.util.DatabaseConnection;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.*;
+import java.sql.Date;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class TransactionDatabaseRepository extends AbstractRepository<Transaction> {
     private static final String SAVE_TRANSACTION_QUERY =
@@ -63,6 +62,20 @@ public class TransactionDatabaseRepository extends AbstractRepository<Transactio
             """
             DELETE FROM TRANSACTIONS
             WHERE USER_ID = ?;
+            """;
+    private static final String EXPENSES_PER_CATEGORY_QUERY = """
+            SELECT SUM(PRICE) AS EXPENSE, CATEGORIES.NAME AS CATEGORY_NAME
+            FROM TRANSACTIONS
+            JOIN CATEGORIES ON CATEGORIES.ID=TRANSACTIONS.CATEGORY_ID
+            WHERE TRANSACTIONS.USER_ID=? AND TRANSACTION_TYPE='OUTCOME'
+            GROUP BY CATEGORY_ID
+            """;
+    private static final String INCOME_PER_MONTH = """
+            SELECT SUM(PRICE) AS INCOME, MONTHNAME(TRANSACTION_DATE) AS TRANSACTION_MONTH
+            FROM TRANSACTIONS
+            WHERE USER_ID=? AND TRANSACTION_TYPE='INCOME'
+            GROUP BY MONTH(TRANSACTION_DATE), TRANSACTION_MONTH
+            ORDER BY MONTH(TRANSACTION_DATE)
             """;
 
     private TransactionDatabaseRepository() {}
@@ -289,5 +302,33 @@ public class TransactionDatabaseRepository extends AbstractRepository<Transactio
         } catch (SQLException | IOException e) {
             throw new RepositoryAccessException(e);
         }
+    }
+
+    public Map<String, BigDecimal> getPieChartData() {
+        return getChartData(EXPENSES_PER_CATEGORY_QUERY, "CATEGORY_NAME", "EXPENSE");
+    }
+
+    public Map<String, BigDecimal> getAreaChartData() {
+        return getChartData(INCOME_PER_MONTH, "TRANSACTION_MONTH", "INCOME");
+    }
+
+    public Map<String, BigDecimal> getChartData(String query, String keyColumn, String valueColumn) {
+        Map<String, BigDecimal> data = new LinkedHashMap<>();
+
+        try (Connection connection = DatabaseConnection.connectToDatabase()) {
+            try (PreparedStatement stmt = connection.prepareStatement(query)) {
+                stmt.setLong(1, UserService.getLoggedInUser().getId());
+
+                ResultSet rs = stmt.executeQuery();
+
+                while(rs.next()) {
+                    data.put(rs.getString(keyColumn), rs.getBigDecimal(valueColumn));
+                }
+            }
+        } catch (SQLException | IOException e) {
+            throw new RepositoryAccessException(e);
+        }
+
+        return data;
     }
 }

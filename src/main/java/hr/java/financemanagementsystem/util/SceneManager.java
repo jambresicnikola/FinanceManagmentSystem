@@ -8,8 +8,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class ScreenManager {
-    private ScreenManager() {
+public class SceneManager {
+    private SceneManager() {
     }
 
     private static final String APP_TITLE = "Finance Management System";
@@ -21,7 +21,7 @@ public class ScreenManager {
     }
 
     public static void setPrimaryStage(Stage primaryStage) {
-        ScreenManager.primaryStage = primaryStage;
+        SceneManager.primaryStage = primaryStage;
     }
 
     private static void openScreen(String title, String fxml) throws IOException {
@@ -79,7 +79,7 @@ public class ScreenManager {
     }
 
     public static void setPasswordStage(Stage passwordStage) {
-        ScreenManager.passwordStage = passwordStage;
+        SceneManager.passwordStage = passwordStage;
     }
 
     public static void openChangePasswordScreen() {
@@ -136,6 +136,14 @@ public class ScreenManager {
     public static void openEditTransactionsScreen() {
         try {
             openScreen(APP_TITLE, "/hr/java/financemanagementsystem/editTransactionScreen.fxml");
+        } catch (IOException e) {
+            throw new ScreenLoadingException(e);
+        }
+    }
+
+    public static void openChartsScreen() {
+        try {
+            openScreen(APP_TITLE, "/hr/java/financemanagementsystem/chartsScreen.fxml");
         } catch (IOException e) {
             throw new ScreenLoadingException(e);
         }

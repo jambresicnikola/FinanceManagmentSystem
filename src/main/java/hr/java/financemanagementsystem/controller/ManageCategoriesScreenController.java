@@ -6,7 +6,7 @@ import hr.java.financemanagementsystem.service.CategoryService;
 import hr.java.financemanagementsystem.service.DialogService;
 import hr.java.financemanagementsystem.service.TransactionService;
 import hr.java.financemanagementsystem.service.UserService;
-import hr.java.financemanagementsystem.util.ScreenManager;
+import hr.java.financemanagementsystem.util.SceneManager;
 import hr.java.financemanagementsystem.util.TableUtils;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
@@ -38,7 +38,7 @@ public class ManageCategoriesScreenController {
 
         categoryEditTableColumn.setCellFactory(TableUtils.createButtonColumn("Edit", (Category category) -> {
             CategoryService.setCategoryToManage(category);
-            ScreenManager.openEditCategoryScreen();
+            SceneManager.openEditCategoryScreen();
         }));
 
         categoryDeleteTableColumn.setCellFactory(TableUtils.createButtonColumn("Delete", (Category category) -> {

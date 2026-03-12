@@ -9,7 +9,7 @@ import hr.java.financemanagementsystem.model.TransactionType;
 import hr.java.financemanagementsystem.service.DialogService;
 import hr.java.financemanagementsystem.service.TransactionService;
 import hr.java.financemanagementsystem.service.UserService;
-import hr.java.financemanagementsystem.util.ScreenManager;
+import hr.java.financemanagementsystem.util.SceneManager;
 import hr.java.financemanagementsystem.util.TableUtils;
 import hr.java.financemanagementsystem.validation.NumberValidator;
 import javafx.beans.property.ReadOnlyObjectWrapper;
@@ -65,7 +65,7 @@ public class ManageTransactionsScreenController {
 
         editTableColumn.setCellFactory(TableUtils.createButtonColumn("Edit", (Transaction transaction) -> {
             TransactionService.setTransactionToManage(transaction);
-            ScreenManager.openEditTransactionsScreen();
+            SceneManager.openEditTransactionsScreen();
         }));
         deleteTableColumn.setCellFactory(TableUtils.createButtonColumn("Delete", (Transaction transaction) -> {
             if (DialogService.confirmation("Delete Transaction", "Are you sure you want to delete this transaction?")) {

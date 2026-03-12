@@ -1,33 +1,45 @@
 package hr.java.financemanagementsystem.controller;
 
-import hr.java.financemanagementsystem.util.ScreenManager;
+import hr.java.financemanagementsystem.util.SceneManager;
 
 public class MenuBarIncludeController {
     public void home() {
-        ScreenManager.openHomeScreen();
+        SceneManager.openHomeScreen();
     }
 
     public void manageCategories() {
-        ScreenManager.openManageCategoriesScreen();
+        SceneManager.openManageCategoriesScreen();
     }
 
     public void addCategory() {
-        ScreenManager.openAddCategoryScreen();
+        SceneManager.openAddCategoryScreen();
     }
 
     public void manageTransactions() {
-        ScreenManager.openManageTransactionsScreen();
+        SceneManager.openManageTransactionsScreen();
     }
 
     public void addTransactions() {
-        ScreenManager.openAddTransactionScreen();
+        SceneManager.openAddTransactionScreen();
     }
 
     public void manageAccount() {
-        ScreenManager.openManageAccountScreen();
+        SceneManager.openManageAccountScreen();
     }
 
     public void logOut() {
-        ScreenManager.openWelcomeScreen();
+        SceneManager.openWelcomeScreen();
+    }
+
+    public void summary() {
+        //summary
+    }
+
+    public void charts() {
+        SceneManager.openChartsScreen();
+    }
+
+    public void about() {
+        //about
     }
 }

@@ -9,7 +9,7 @@ import hr.java.financemanagementsystem.dto.UserRegistrationForm;
 import hr.java.financemanagementsystem.exception.PasswordChangeException;
 import hr.java.financemanagementsystem.exception.UserValidationException;
 import hr.java.financemanagementsystem.model.User;
-import hr.java.financemanagementsystem.util.ScreenManager;
+import hr.java.financemanagementsystem.util.SceneManager;
 import hr.java.financemanagementsystem.validation.UserValidator;
 
 import java.util.Optional;
@@ -48,7 +48,7 @@ public class UserService {
 
         DialogService.information("Account created", "You have successfully registered.");
 
-        ScreenManager.openWelcomeScreen();
+        SceneManager.openWelcomeScreen();
     }
 
     public static void signIn(String username, String password) throws UserValidationException {
@@ -67,7 +67,7 @@ public class UserService {
 
         setLoggedInUser(user.get());
 
-        ScreenManager.openHomeScreen();
+        SceneManager.openHomeScreen();
     }
 
     public static void editProfile(UserEditProfileForm userEditProfileForm) throws UserValidationException {
@@ -101,7 +101,7 @@ public class UserService {
 
         DialogService.information("Account updated", "You have successfully updated your account.");
 
-        ScreenManager.openManageAccountScreen();
+        SceneManager.openManageAccountScreen();
     }
 
     public static void changePassword(String currentPassword, String newPassword, String confirmNewPassword)
@@ -121,7 +121,7 @@ public class UserService {
 
         DialogService.information("Password changed", "You have successfully changed your password.");
 
-        ScreenManager.getPasswordStage().close();
+        SceneManager.getPasswordStage().close();
     }
 
     public static void deleteUserAccount() {
@@ -134,7 +134,7 @@ public class UserService {
 
             DialogService.information("Account deleted", "You have successfully deleted your account.");
 
-            ScreenManager.openWelcomeScreen();
+            SceneManager.openWelcomeScreen();
         }
     }
 }
