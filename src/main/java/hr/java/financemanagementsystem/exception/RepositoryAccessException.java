@@ -1,5 +1,9 @@
 package hr.java.financemanagementsystem.exception;
 
+/**
+ * Thrown when a database operation fails due to a connection or SQL error.
+ * Wraps low level exceptions like {@link java.sql.SQLException} and {@link java.io.IOException}.
+ */
 public class RepositoryAccessException extends RuntimeException {
     public RepositoryAccessException(String message) {
         super(message);

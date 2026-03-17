@@ -3,6 +3,9 @@ package hr.java.financemanagementsystem.model;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+/**
+ * Represents a financial transaction made by a user.
+ */
 public class Transaction extends Entity {
     private String description;
     private Integer amount;
@@ -23,6 +26,9 @@ public class Transaction extends Entity {
         this.user = builder.user;
     }
 
+    /**
+     * Builder for creating {@link Transaction} instances.
+     */
     public static class Builder {
         private Long id;
         private String description;

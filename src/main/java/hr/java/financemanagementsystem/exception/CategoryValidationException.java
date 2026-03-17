@@ -1,5 +1,8 @@
 package hr.java.financemanagementsystem.exception;
 
+/**
+ * Thrown when category data fails validation.
+ */
 public class CategoryValidationException extends RuntimeException {
     public CategoryValidationException(String message) {
         super(message);

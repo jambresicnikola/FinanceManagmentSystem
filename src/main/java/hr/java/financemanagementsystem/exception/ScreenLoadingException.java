@@ -1,5 +1,8 @@
 package hr.java.financemanagementsystem.exception;
 
+/**
+ * Thrown when a screen fails to load, usually due to a missing or invalid FXML file.
+ */
 public class ScreenLoadingException extends RuntimeException {
     public ScreenLoadingException(String message) {
         super(message);

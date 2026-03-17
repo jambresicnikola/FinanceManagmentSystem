@@ -5,6 +5,7 @@ module hr.java.financemanagementsystem.financemanagmentsystem {
     requires bcrypt;
     requires java.sql;
     requires javafx.base;
+    requires org.slf4j;
 
 
     exports hr.java.financemanagementsystem.app;

@@ -1,5 +1,8 @@
 package hr.java.financemanagementsystem.exception;
 
+/**
+ * Thrown when user data fails validation.
+ */
 public class UserValidationException extends RuntimeException {
     public UserValidationException(String message) {
         super(message);

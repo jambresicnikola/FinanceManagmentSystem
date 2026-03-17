@@ -3,10 +3,16 @@ package hr.java.financemanagementsystem.service;
 import hr.java.financemanagementsystem.database.CategoryDatabaseRepository;
 import hr.java.financemanagementsystem.exception.CategoryValidationException;
 import hr.java.financemanagementsystem.model.Category;
-import hr.java.financemanagementsystem.util.SceneManager;
 import hr.java.financemanagementsystem.validation.CategoryValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+/**
+ * Handles business logic for category management.
+ */
 public class CategoryService {
+    private static final Logger logger = LoggerFactory.getLogger(CategoryService.class);
+
     private CategoryService() {}
 
     private static Category categoryToManage;
@@ -19,35 +25,53 @@ public class CategoryService {
         CategoryService.categoryToManage = categoryToManage;
     }
 
+    /**
+     * Validates and saves a new category.
+     * @param category the category to create
+     * @throws CategoryValidationException if the category is invalid or already exists
+     */
     public static void createNewCategory(Category category) {
-        CategoryValidator.validateCategory(category);
+        logger.debug("Creating new category: '{}'", category.getName());
 
+        CategoryValidator.validateCategory(category);
         checkIfCategoryExists(category);
 
         CategoryDatabaseRepository.getInstance().save(category);
-
-        DialogService.information("Category created", "Category has been successfully created.");
+        logger.info("Category '{}' created successfully.", category.getName());
     }
 
+    /**
+     * Validates and updates the currently managed category.
+     * @throws CategoryValidationException if the category is invalid or already exists
+     */
     public static void editCategory() {
-        CategoryValidator.validateCategory(categoryToManage);
+        logger.debug("Editing category with id: {}", categoryToManage.getId());
 
+        CategoryValidator.validateCategory(categoryToManage);
         checkIfCategoryExists(categoryToManage);
 
         CategoryDatabaseRepository.getInstance().update(categoryToManage);
-
-        DialogService.information("Changes successful", "Category has been successfully updated.");
-
-        SceneManager.openManageCategoriesScreen();
+        logger.info("Category '{}' updated successfully.", categoryToManage.getName());
     }
 
+    /**
+     * Checks if a category with the same name already exists for the logged in user.
+     * @param category the category to check
+     * @throws CategoryValidationException if a category with the same name already exists
+     */
     private static void checkIfCategoryExists(Category category) throws CategoryValidationException {
         if (CategoryDatabaseRepository.getInstance().findCategoryByName(category.getName(), UserService.getLoggedInUser()).isPresent()) {
-            throw new CategoryValidationException("\nCategory already exists.");
+            throw new CategoryValidationException("\nA category with this name already exists.");
         }
     }
 
+    /**
+     * Deletes a category from the database.
+     * @param category the category to delete
+     */
     public static void deleteCategory(Category category) {
+        logger.debug("Deleting category: '{}'", category.getName());
         CategoryDatabaseRepository.getInstance().delete(category);
+        logger.info("Category '{}' deleted successfully.", category.getName());
     }
 }

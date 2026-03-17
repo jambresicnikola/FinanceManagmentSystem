@@ -1,0 +1,10 @@
+module:hr.java.financemanagementsystem.financemanagmentsystem
+hr.java.financemanagementsystem.app
+hr.java.financemanagementsystem.controller
+hr.java.financemanagementsystem.database
+hr.java.financemanagementsystem.dto
+hr.java.financemanagementsystem.exception
+hr.java.financemanagementsystem.model
+hr.java.financemanagementsystem.service
+hr.java.financemanagementsystem.util
+hr.java.financemanagementsystem.validation

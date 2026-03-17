@@ -1,5 +1,8 @@
 package hr.java.financemanagementsystem.model;
 
+/**
+ * Represents a registered user of the application.
+ */
 public class User extends Entity {
     private String firstName;
     private String lastName;
@@ -14,6 +17,9 @@ public class User extends Entity {
         this.password = builder.password;
     }
 
+    /**
+     * Builder for creating {@link User} instances.
+     */
     public static class Builder {
         private Long id;
         private String firstName;

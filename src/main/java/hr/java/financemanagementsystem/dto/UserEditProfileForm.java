@@ -1,5 +1,8 @@
 package hr.java.financemanagementsystem.dto;
 
+/**
+ * Holds the form data for editing a user's profile.
+ */
 public class UserEditProfileForm {
     private String firstName;
     private String lastName;

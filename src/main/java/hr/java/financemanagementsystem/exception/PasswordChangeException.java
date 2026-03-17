@@ -1,5 +1,8 @@
 package hr.java.financemanagementsystem.exception;
 
+/**
+ * Thrown when a password change request fails validation.
+ */
 public class PasswordChangeException extends RuntimeException {
     public PasswordChangeException(String message) {
         super(message);

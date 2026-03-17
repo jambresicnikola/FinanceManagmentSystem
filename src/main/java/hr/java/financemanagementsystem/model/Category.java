@@ -1,5 +1,8 @@
 package hr.java.financemanagementsystem.model;
 
+/**
+ * Represents a transaction category created by a user.
+ */
 public class Category extends Entity {
     private String name;
     private User user;
@@ -10,6 +13,9 @@ public class Category extends Entity {
         this.user = builder.user;
     }
 
+    /**
+     * Builder for creating {@link Category} instances.
+     */
     public static class Builder {
         private Long id;
         private String name;

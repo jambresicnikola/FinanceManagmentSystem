@@ -6,6 +6,10 @@ import hr.java.financemanagementsystem.model.TransactionType;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+/**
+ * Holds the filter criteria for searching transactions.
+ * Fields that are null or empty are ignored in the filter query.
+ */
 public class TransactionFilterForm {
     private String description;
     private Category category;

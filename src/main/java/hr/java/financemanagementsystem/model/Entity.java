@@ -1,5 +1,9 @@
 package hr.java.financemanagementsystem.model;
 
+/**
+ * Base class for all model entities.
+ * Every entity in the app has a unique database id.
+ */
 public abstract class Entity {
     private Long id;
 

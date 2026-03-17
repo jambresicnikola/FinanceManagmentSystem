@@ -1,5 +1,8 @@
 package hr.java.financemanagementsystem.exception;
 
+/**
+ * Thrown when transaction data fails validation.
+ */
 public class TransactionValidationException extends RuntimeException {
     public TransactionValidationException(String message) {
         super(message);

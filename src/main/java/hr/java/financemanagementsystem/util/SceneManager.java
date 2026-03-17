@@ -5,16 +5,25 @@ import hr.java.financemanagementsystem.exception.ScreenLoadingException;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
+/**
+ * Utility class for navigating between screens in the app.
+ * All screen transitions go through this class.
+ */
 public class SceneManager {
+    private static final Logger logger = LoggerFactory.getLogger(SceneManager.class);
+
     private SceneManager() {
     }
 
     private static final String APP_TITLE = "Finance Management System";
 
     private static Stage primaryStage;
+    private static Stage passwordStage;
 
     public static Stage getPrimaryStage() {
         return primaryStage;
@@ -24,56 +33,6 @@ public class SceneManager {
         SceneManager.primaryStage = primaryStage;
     }
 
-    private static void openScreen(String title, String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(FinanceManagementSystemApplication.class.getResource(fxml));
-        Scene scene = new Scene(fxmlLoader.load(), 900, 500);
-        primaryStage.setTitle(title);
-        primaryStage.setScene(scene);
-        primaryStage.show();
-    }
-
-    public static void openWelcomeScreen() {
-        try {
-            openScreen(APP_TITLE, "/hr/java/financemanagementsystem/welcomeScreen.fxml");
-        } catch (IOException e) {
-            throw new ScreenLoadingException(e);
-        }
-    }
-
-    public static void openSignUpScreen() {
-        try {
-            openScreen(APP_TITLE, "/hr/java/financemanagementsystem/signUpScreen.fxml");
-        } catch (IOException e) {
-            throw new ScreenLoadingException(e);
-        }
-    }
-
-    public static void openHomeScreen() {
-        try {
-            openScreen(APP_TITLE, "/hr/java/financemanagementsystem/homeScreen.fxml");
-        } catch (IOException e) {
-            throw new ScreenLoadingException(e);
-        }
-    }
-
-    public static void openAddCategoryScreen() {
-        try {
-            openScreen(APP_TITLE, "/hr/java/financemanagementsystem/addCategoryScreen.fxml");
-        } catch (IOException e) {
-            throw new ScreenLoadingException(e);
-        }
-    }
-
-    public static void openManageAccountScreen() {
-        try {
-            openScreen(APP_TITLE, "/hr/java/financemanagementsystem/manageAccountScreen.fxml");
-        } catch (IOException e) {
-            throw new ScreenLoadingException(e);
-        }
-    }
-
-    private static Stage passwordStage;
-
     public static Stage getPasswordStage() {
         return passwordStage;
     }
@@ -82,70 +41,99 @@ public class SceneManager {
         SceneManager.passwordStage = passwordStage;
     }
 
+    /**
+     * Loads an FXML file and sets it as the current scene on the primary stage.
+     * @param title the window title to set
+     * @param fxml the path to the FXML file
+     * @throws ScreenLoadingException if the FXML file cannot be loaded
+     */
+    private static void openScreen(String title, String fxml) {
+        logger.debug("Navigating to screen: {}", fxml);
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(
+                    FinanceManagementSystemApplication.class.getResource(fxml));
+            Scene scene = new Scene(fxmlLoader.load(), 900, 500);
+            primaryStage.setTitle(title);
+            primaryStage.setScene(scene);
+            primaryStage.show();
+        } catch (IOException e) {
+            throw new ScreenLoadingException(e);
+        }
+    }
+
+    /** Navigates to the Welcome screen. */
+    public static void openWelcomeScreen() {
+        openScreen(APP_TITLE, "/hr/java/financemanagementsystem/welcomeScreen.fxml");
+    }
+
+    /** Navigates to the Sign Up screen. */
+    public static void openSignUpScreen() {
+        openScreen(APP_TITLE, "/hr/java/financemanagementsystem/signUpScreen.fxml");
+    }
+
+    /** Navigates to the Home screen. */
+    public static void openHomeScreen() {
+        openScreen(APP_TITLE, "/hr/java/financemanagementsystem/homeScreen.fxml");
+    }
+
+    /** Navigates to the Add Category screen. */
+    public static void openAddCategoryScreen() {
+        openScreen(APP_TITLE, "/hr/java/financemanagementsystem/addCategoryScreen.fxml");
+    }
+
+    /** Navigates to the Manage Account screen. */
+    public static void openManageAccountScreen() {
+        openScreen(APP_TITLE, "/hr/java/financemanagementsystem/manageAccountScreen.fxml");
+    }
+
+    /**
+     * Opens the Change Password screen in a new window.
+     * @throws ScreenLoadingException if the FXML file cannot be loaded
+     */
     public static void openChangePasswordScreen() {
+        logger.debug("Opening Change Password screen in a new window.");
         FXMLLoader fxmlLoader = new FXMLLoader(
                 FinanceManagementSystemApplication.class.getResource("/hr/java/financemanagementsystem/changePasswordScreen.fxml"));
-        Scene scene;
 
         try {
-            scene = new Scene(fxmlLoader.load(), 600, 400);
+            Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+            Stage stage = new Stage();
+            stage.setTitle("Change Password");
+            stage.setScene(scene);
+            stage.show();
+            setPasswordStage(stage);
         } catch (IOException e) {
             throw new ScreenLoadingException(e);
         }
-
-        Stage stage = new Stage();
-        stage.setTitle("Change password");
-        stage.setScene(scene);
-        stage.show();
-
-        setPasswordStage(stage);
     }
 
+    /** Navigates to the Manage Categories screen. */
     public static void openManageCategoriesScreen() {
-        try {
-            openScreen(APP_TITLE, "/hr/java/financemanagementsystem/manageCategoriesScreen.fxml");
-        } catch (IOException e) {
-            throw new ScreenLoadingException(e);
-        }
+        openScreen(APP_TITLE, "/hr/java/financemanagementsystem/manageCategoriesScreen.fxml");
     }
 
+    /** Navigates to the Edit Category screen. */
     public static void openEditCategoryScreen() {
-        try {
-            openScreen(APP_TITLE, "/hr/java/financemanagementsystem/editCategoryScreen.fxml");
-        } catch (IOException e) {
-            throw new ScreenLoadingException(e);
-        }
+        openScreen(APP_TITLE, "/hr/java/financemanagementsystem/editCategoryScreen.fxml");
     }
 
+    /** Navigates to the Add Transaction screen. */
     public static void openAddTransactionScreen() {
-        try {
-            openScreen(APP_TITLE, "/hr/java/financemanagementsystem/addTransactionScreen.fxml");
-        } catch (IOException e) {
-            throw new ScreenLoadingException(e);
-        }
+        openScreen(APP_TITLE, "/hr/java/financemanagementsystem/addTransactionScreen.fxml");
     }
 
+    /** Navigates to the Manage Transactions screen. */
     public static void openManageTransactionsScreen() {
-        try {
-            openScreen(APP_TITLE, "/hr/java/financemanagementsystem/manageTransactionsScreen.fxml");
-        } catch (IOException e) {
-            throw new ScreenLoadingException(e);
-        }
+        openScreen(APP_TITLE, "/hr/java/financemanagementsystem/manageTransactionsScreen.fxml");
     }
 
+    /** Navigates to the Edit Transaction screen. */
     public static void openEditTransactionsScreen() {
-        try {
-            openScreen(APP_TITLE, "/hr/java/financemanagementsystem/editTransactionScreen.fxml");
-        } catch (IOException e) {
-            throw new ScreenLoadingException(e);
-        }
+        openScreen(APP_TITLE, "/hr/java/financemanagementsystem/editTransactionScreen.fxml");
     }
 
+    /** Navigates to the Charts screen. */
     public static void openChartsScreen() {
-        try {
-            openScreen(APP_TITLE, "/hr/java/financemanagementsystem/chartsScreen.fxml");
-        } catch (IOException e) {
-            throw new ScreenLoadingException(e);
-        }
+        openScreen(APP_TITLE, "/hr/java/financemanagementsystem/chartsScreen.fxml");
     }
 }

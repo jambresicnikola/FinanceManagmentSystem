@@ -1,5 +1,8 @@
 package hr.java.financemanagementsystem.dto;
 
+/**
+ * Holds the form data for registering a new user.
+ */
 public class UserRegistrationForm {
     private String firstName;
     private String lastName;
