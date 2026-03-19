@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.chart.AreaChart?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
@@ -9,45 +10,54 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.java.financemanagementsystem.controller.ChartsScreenController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.java.financemanagementsystem.controller.ChartsScreenController">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
       <ColumnConstraints />
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints maxHeight="168.0000244140625" minHeight="10.0" prefHeight="115.19998626708986" vgrow="SOMETIMES" />
-        <RowConstraints maxHeight="373.59999084472656" minHeight="10.0" prefHeight="308.0000244140625" vgrow="SOMETIMES" />
-        <RowConstraints maxHeight="195.4000305175781" minHeight="10.0" prefHeight="78.39997558593751" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="447.2000396728516" minHeight="10.0" prefHeight="81.59998779296875" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="699.4666748046875" minHeight="10.0" prefHeight="687.2000122070312" vgrow="SOMETIMES" />
     </rowConstraints>
     <children>
         <fx:include source="menuBarInclude.fxml" />
       <HBox alignment="CENTER" prefHeight="234.0" prefWidth="900.0" spacing="100.0" GridPane.rowIndex="1">
          <children>
-            <GridPane prefWidth="300.0" style="-fx-background-color: #5fa8d3;">
+            <GridPane maxHeight="-Infinity" prefHeight="500.0" prefWidth="500.0" style="-fx-background-color: #5fa8d3; -fx-background-radius: 15;">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
               </columnConstraints>
               <rowConstraints>
-                <RowConstraints maxHeight="149.60001220703126" minHeight="10.0" prefHeight="55.20001068115235" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="253.59998931884766" minHeight="10.0" prefHeight="253.59998931884766" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="465.86669921875" minHeight="10.0" prefHeight="91.1333297729492" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="438.1333404541016" minHeight="0.0" prefHeight="409.2666702270508" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label text="Expenses per category" textFill="WHITE" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                  <PieChart fx:id="expensesPerCategoryPieChart" GridPane.rowIndex="1" />
+                  <Label text="Expenses per category" textFill="WHITE" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                     <font>
+                        <Font name="Arial" size="24.0" />
+                     </font></Label>
+                  <PieChart fx:id="expensesPerCategoryPieChart" prefWidth="500.0" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets bottom="30.0" />
+                     </GridPane.margin></PieChart>
                </children>
             </GridPane>
-            <GridPane prefWidth="300.0" style="-fx-background-color: #5fa8d3;">
+            <GridPane maxHeight="-Infinity" prefHeight="500.0" prefWidth="500.0" style="-fx-background-color: #5fa8d3; -fx-background-radius: 15;">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
               </columnConstraints>
               <rowConstraints>
-                <RowConstraints maxHeight="149.59998168945313" minHeight="10.0" prefHeight="53.5999740600586" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="264.00001373291013" minHeight="10.0" prefHeight="255.2000259399414" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="414.4" minHeight="10.0" prefHeight="91.1333297729492" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="445.0667083740235" minHeight="0.0" prefHeight="439.73336486816413" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label text="Income per month" textFill="WHITE" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                  <AreaChart fx:id="incomePerMonthAreaChart" legendVisible="false" GridPane.rowIndex="1">
+                  <Label text="Income per month" textFill="WHITE" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                     <font>
+                        <Font name="Arial" size="24.0" />
+                     </font></Label>
+                  <AreaChart fx:id="incomePerMonthAreaChart" legendVisible="false" prefWidth="500.0" GridPane.rowIndex="1">
                     <xAxis>
                       <CategoryAxis side="BOTTOM" />
                     </xAxis>

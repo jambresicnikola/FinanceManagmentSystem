@@ -52,7 +52,7 @@ public class SceneManager {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(
                     FinanceManagementSystemApplication.class.getResource(fxml));
-            Scene scene = new Scene(fxmlLoader.load(), 900, 500);
+            Scene scene = new Scene(fxmlLoader.load(), 1366, 768);
             primaryStage.setTitle(title);
             primaryStage.setScene(scene);
             primaryStage.show();

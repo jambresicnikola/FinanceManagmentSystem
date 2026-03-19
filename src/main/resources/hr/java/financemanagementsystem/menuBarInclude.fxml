@@ -6,7 +6,7 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.GridPane?>
 
-<MenuBar prefWidth="900.0" GridPane.columnSpan="2" GridPane.valignment="TOP" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.java.financemanagementsystem.controller.MenuBarIncludeController">
+<MenuBar prefWidth="1366.0" stylesheets="@../../../css/menuBar.css" GridPane.columnSpan="2" GridPane.valignment="TOP" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.java.financemanagementsystem.controller.MenuBarIncludeController">
     <menus>
       <Menu mnemonicParsing="false" text="Home">
         <items>
@@ -28,11 +28,6 @@
             <items>
                 <MenuItem mnemonicParsing="false" onAction="#manageCategories" text="Manage categories" />
                 <MenuItem mnemonicParsing="false" onAction="#addCategory" text="Add category" />
-            </items>
-        </Menu>
-        <Menu mnemonicParsing="false" text="About">
-            <items>
-                <MenuItem mnemonicParsing="false" onAction="#about" text="About Finance Management System" />
             </items>
         </Menu>
         <Menu mnemonicParsing="false" text="Account">

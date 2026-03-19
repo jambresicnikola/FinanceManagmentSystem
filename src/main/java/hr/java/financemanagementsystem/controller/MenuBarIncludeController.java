@@ -53,9 +53,4 @@ public class MenuBarIncludeController {
     public void charts() {
         SceneManager.openChartsScreen();
     }
-
-    /** Navigates to the About screen. */
-    public void about() {
-        //about
-    }
 }

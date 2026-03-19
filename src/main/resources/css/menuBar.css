@@ -1,0 +1,17 @@
+.menu-bar {
+    -fx-background-color: #62b6cb;
+}
+
+.menu, .menu-item {
+    -fx-padding: 7 15;
+    -fx-background-radius: 10;
+}
+
+.menu .label {
+    -fx-text-fill: white;
+}
+
+.context-menu {
+    -fx-background-color: #1b4965;
+    -fx-background-radius: 10;
+}
